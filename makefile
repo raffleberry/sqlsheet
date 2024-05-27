@@ -8,6 +8,9 @@ sqlsheet:
 build: cmd/app/app.go
 	go build -o build/app cmd/app/app.go
 
+test:
+	go test -v .
+
 clean:
 	rm build/*
 

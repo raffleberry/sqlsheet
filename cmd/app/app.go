@@ -1,30 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"os"
 
-	"github.com/raffleberry/sqlsheet/web"
+	"github.com/raffleberry/sqlsheet/web/tmpl"
 )
 
 func main() {
-
-	dogs := []web.Pet{
-		{
-			Name:   "Jujube",
-			Sex:    "Female",
-			Intact: false,
-			Age:    "10 months",
-			Breed:  "German Shepherd/Pitbull",
-		},
-		{
-			Name:   "Zephyr",
-			Sex:    "Male",
-			Intact: true,
-			Age:    "13 years, 3 months",
-			Breed:  "German Shepherd/Border Collie",
-		},
-	}
-	web.PrintDogs(dogs)
-	fmt.Println("Hello SqlSheet")
-
+	tmpl.Use(os.Stdout, "foo", "World")
 }
