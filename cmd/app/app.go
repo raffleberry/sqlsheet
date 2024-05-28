@@ -1,11 +1,7 @@
 package main
 
-import (
-	"os"
-
-	"github.com/raffleberry/sqlsheet/web/tmpl"
-)
+import "github.com/raffleberry/sqlsheet/web/api"
 
 func main() {
-	tmpl.Use(os.Stdout, "foo", "World")
+	api.Start()
 }

@@ -4,31 +4,22 @@ import (
 	"embed"
 	"html/template"
 	"io"
-	"os"
+
+	utils "github.com/raffleberry/sqlsheet/pkg"
 )
 
-type Pet struct {
-	Name   string
-	Sex    string
-	Intact bool
-	Age    string
-	Breed  string
-}
-
-//go:embed templates.tmpl
+//go:embed *.html
 var Tmpl embed.FS
 var T *template.Template
 var Err error
 
 func init() {
-	T, Err = template.ParseFS(Tmpl, "templates.tmpl")
-	if Err != nil {
-		panic(Err)
-	}
+	T, Err = template.ParseFS(Tmpl, "*.html")
+	utils.Panic(Err)
 }
 
 func Use(wr io.Writer, name string, data any) error {
-	err := T.ExecuteTemplate(os.Stdout, name, data)
+	err := T.ExecuteTemplate(wr, name, data)
 	if err != nil {
 		return err
 	}

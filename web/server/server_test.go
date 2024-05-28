@@ -2,15 +2,16 @@ package server_test
 
 import (
 	"context"
+	"net"
 	"testing"
 	"time"
 
+	utils "github.com/raffleberry/sqlsheet/pkg"
 	"github.com/raffleberry/sqlsheet/web/server"
 )
 
-func TestStart(t *testing.T) {
-	ready, done, s := server.Start(0)
-
+func TestNew(t *testing.T) {
+	ready, done, s := server.New(0, nil)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*2)
 
 	defer cancel()
@@ -21,8 +22,11 @@ func TestStart(t *testing.T) {
 		cancel()
 	}
 
-	// WRITE TESTS HERE
-	t.Log("TODO: Parse Port")
+	// TEST
+	addr, err := net.ResolveTCPAddr("tcp4", s.Addr)
+	utils.TPanic(t, err)
+	t.Logf("IP: %v", addr.IP)
+	t.Logf("Port: %v", addr.Port)
 
 	ctx, cancel = context.WithTimeout(context.Background(), time.Second*2)
 	defer cancel()
