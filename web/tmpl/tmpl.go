@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"io"
 
-	utils "github.com/raffleberry/sqlsheet/pkg"
+	"github.com/raffleberry/sqlsheet/pkg/utils"
 )
 
 //go:embed *.html

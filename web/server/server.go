@@ -5,7 +5,7 @@ import (
 	"net"
 	"net/http"
 
-	utils "github.com/raffleberry/sqlsheet/pkg"
+	"github.com/raffleberry/sqlsheet/pkg/utils"
 )
 
 // port = 0, for a random port

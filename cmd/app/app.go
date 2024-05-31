@@ -1,7 +1,27 @@
 package main
 
-import "github.com/raffleberry/sqlsheet/web/api"
+import (
+	"log"
+
+	"github.com/raffleberry/sqlsheet/pkg/store"
+	"github.com/raffleberry/sqlsheet/pkg/utils"
+)
+
+type Test struct {
+	Title string
+}
 
 func main() {
-	api.Start()
+	store.Connect()
+
+	forms, err := store.FormAll()
+	utils.Panic(err)
+	log.Println(forms)
+
+	views, err := store.ViewAll()
+	utils.Panic(err)
+	log.Println(views)
+
+	// api.Start()
+
 }
