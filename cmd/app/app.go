@@ -5,6 +5,7 @@ import (
 
 	"github.com/raffleberry/sqlsheet/pkg/store"
 	"github.com/raffleberry/sqlsheet/pkg/utils"
+	"github.com/raffleberry/sqlsheet/web/api"
 )
 
 type Test struct {
@@ -22,6 +23,6 @@ func main() {
 	utils.Panic(err)
 	log.Println(views)
 
-	// api.Start()
+	api.Start()
 
 }

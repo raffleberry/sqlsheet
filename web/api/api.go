@@ -4,7 +4,6 @@ import (
 	"embed"
 	"log"
 	"net/http"
-	"path/filepath"
 
 	"github.com/raffleberry/sqlsheet/web/server"
 	"github.com/raffleberry/sqlsheet/web/tmpl"
@@ -16,7 +15,6 @@ var static embed.FS
 func Start() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc(StaticFilesPath, StaticFilesHandler)
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		url := r.URL.Path
 		err := tmpl.Use(w, "home", url)
@@ -25,6 +23,10 @@ func Start() {
 			w.Write([]byte(err.Error()))
 		}
 	})
+	mux.HandleFunc(staticFilesPath, staticFilesHandler)
+	mux.HandleFunc(formCreatePath, formCreate)
+	mux.HandleFunc(formEditPath, formEdit)
+	mux.HandleFunc(viewsPath, views)
 
 	ready, done, s := server.New(5500, mux)
 	<-ready
@@ -34,9 +36,30 @@ func Start() {
 	<-done
 }
 
-var StaticFilesPath = "/static/"
+var staticFilesPath = "/static/"
 
-func StaticFilesHandler(w http.ResponseWriter, r *http.Request) {
-	path := filepath.Clean(r.URL.Path)
+func staticFilesHandler(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path
 	http.ServeFileFS(w, r, static, path)
+}
+
+var formCreatePath = "/form/create/"
+
+func formCreate(w http.ResponseWriter, r *http.Request) {
+
+}
+
+var formEditPath = "/form/edit/"
+
+func formEdit(w http.ResponseWriter, r *http.Request) {
+
+}
+
+var viewsPath = "/view/"
+
+func views(w http.ResponseWriter, r *http.Request) {
+	tmpl.Use(w, "view", struct {
+		f string
+		b string
+	}{"foo", "bar"})
 }
