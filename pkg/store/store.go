@@ -32,6 +32,23 @@ func ViewAll() ([]View, error) {
 	return views, nil
 }
 
+func ViewId(id int) (View, error) {
+	var view View
+	rows, err := db.Conn.Query("SELECT * FROM views WHERE id=?;", id)
+	if err != nil {
+		return view, err
+	}
+	defer rows.Close()
+	rows.Next()
+	err = view.Scan(rows)
+	if err != nil {
+		return view, err
+	}
+
+	return view, nil
+
+}
+
 func FormAll() ([]Form, error) {
 	var forms []Form
 	rows, err := db.Conn.Query("SELECT * FROM forms;")

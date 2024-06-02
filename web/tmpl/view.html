@@ -1,4 +1,4 @@
-{{define "view"}}
+{{define "views"}}
 {{template "header"}}
 <main>
     <header>
@@ -13,6 +13,37 @@
         </li>
     </ul>
     {{end}}
+</main>
+
+{{template "footer"}}
+
+{{end}}
+
+{{define "view"}}
+{{template "header"}}
+<main>
+    <header>
+        Name:&nbsp;{{.V.Name}} <br>
+        Query:<blockquote>{{.V.Query}}</blockquote>
+    </header>
+    <table>
+        <thead>
+            <tr>
+                {{ range .Th }}
+                <td>{{.}}</td>
+                {{end}}
+            </tr>
+        </thead>
+        <tbody>
+            {{range .Td}}
+            <tr>
+                {{ range . }}
+                <td>{{.}}</td>
+                {{end}}
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
 </main>
 
 {{template "footer"}}

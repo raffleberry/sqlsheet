@@ -8,8 +8,8 @@ type View struct {
 	Query string
 }
 
-func (v *View) Scan(row *sql.Rows) error {
-	err := row.Scan(&v.ID, &v.Name, &v.Query)
+func (v *View) Scan(rows *sql.Rows) error {
+	err := rows.Scan(&v.ID, &v.Name, &v.Query)
 	if err != nil {
 		return err
 	}
@@ -22,8 +22,8 @@ type Form struct {
 	ColumnTypes string
 }
 
-func (v *Form) Scan(row *sql.Rows) error {
-	err := row.Scan(&v.ID, &v.ColumnNames, &v.ColumnTypes)
+func (v *Form) Scan(rows *sql.Rows) error {
+	err := rows.Scan(&v.ID, &v.ColumnNames, &v.ColumnTypes)
 	if err != nil {
 		return err
 	}
