@@ -15,5 +15,5 @@ clean:
 	rm build/*
 
 run:
-	go run cmd/app/app.go
+	export DEV=1 && go run cmd/app/app.go
 

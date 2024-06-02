@@ -16,8 +16,8 @@ import (
 	"github.com/raffleberry/sqlsheet/web/tmpl"
 )
 
-//go:embed static/*
-var static embed.FS
+//go:embed static
+var staticFs embed.FS
 
 func Start() {
 	mux := http.NewServeMux()
@@ -30,7 +30,7 @@ func Start() {
 			w.Write([]byte(err.Error()))
 		}
 	})
-	mux.HandleFunc(staticFilesPath, staticFilesHandler)
+	mux.Handle(staticFilesPath, http.FileServerFS(staticFs))
 	mux.HandleFunc(formCreatePath, formCreate)
 	mux.HandleFunc(formEditPath, formEdit)
 	mux.HandleFunc(viewsPath, views)
@@ -62,11 +62,6 @@ func Start() {
 }
 
 var staticFilesPath = "/static/"
-
-func staticFilesHandler(w http.ResponseWriter, r *http.Request) {
-	path := r.URL.Path
-	http.ServeFileFS(w, r, static, path)
-}
 
 var formCreatePath = "/form/create/"
 
