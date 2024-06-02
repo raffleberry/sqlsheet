@@ -4,12 +4,12 @@ import "database/sql"
 
 type View struct {
 	ID    int64
-	name  string
+	Name  string
 	Query string
 }
 
 func (v *View) Scan(row *sql.Rows) error {
-	err := row.Scan(&v.ID, &v.name, &v.Query)
+	err := row.Scan(&v.ID, &v.Name, &v.Query)
 	if err != nil {
 		return err
 	}

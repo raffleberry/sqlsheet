@@ -21,14 +21,10 @@ func Init() {
 	}
 
 	Conn, Err = sql.Open("mysql", cfg.FormatDSN())
-
-	if Err != nil {
-		utils.Panic(Err)
-	}
+	utils.Panic(Err)
 
 	pingErr := Conn.Ping()
-	if pingErr != nil {
-		log.Println(pingErr)
-	}
+	utils.Panic(pingErr)
+
 	log.Println("Connected to MySql!")
 }

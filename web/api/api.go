@@ -1,11 +1,15 @@
 package api
 
 import (
+	"context"
 	"embed"
-	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"time"
 
+	"github.com/raffleberry/sqlsheet/pkg/store"
 	"github.com/raffleberry/sqlsheet/web/server"
 	"github.com/raffleberry/sqlsheet/web/tmpl"
 )
@@ -29,12 +33,30 @@ func Start() {
 	mux.HandleFunc(formEditPath, formEdit)
 	mux.HandleFunc(viewsPath, views)
 
+	sigint := make(chan os.Signal, 1)
+	signal.Notify(sigint, os.Interrupt)
+
 	ready, done, s := server.New(5500, mux)
 	<-ready
 
 	log.Printf("server started on : http://%v\n", s.Addr)
+	log.Println("Ctrl + C to shutdown..")
+	<-sigint
 
-	<-done
+	ctx, cancel := context.WithDeadline(context.TODO(), time.Now().Add(time.Second*3))
+	defer cancel()
+
+	s.Shutdown(ctx)
+
+	log.Println("Shutting down..")
+
+	select {
+	case <-done:
+		log.Println("bye 👋")
+	case <-ctx.Done():
+		log.Println("shutdown request timedout..")
+		log.Println("ok, bye 👋")
+	}
 }
 
 var staticFilesPath = "/static/"
@@ -59,12 +81,16 @@ func formEdit(w http.ResponseWriter, r *http.Request) {
 var viewsPath = "/view/"
 
 func views(w http.ResponseWriter, r *http.Request) {
-	err := tmpl.Use(w, "view", struct {
-		F string
-		B string
-	}{"foo", "bar"})
+
+	views, err := store.ViewAll()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	err = tmpl.Use(w, "view", views)
 
 	if err != nil {
-		fmt.Fprint(w, err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
 	}
 }

@@ -4,7 +4,15 @@
     <header>
         <h1>Views</h1>
     </header>
-    {{.}}
+    <ul>
+        {{ range $view := .}}
+        <li>
+            <a href="/view/{{$view.ID}}">
+                {{$view.Name}}
+            </a>
+        </li>
+    </ul>
+    {{end}}
 </main>
 
 {{template "footer"}}
