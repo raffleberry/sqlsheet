@@ -12,7 +12,7 @@ func Connect() {
 
 func ViewAll() ([]View, error) {
 	var views []View
-	rows, err := db.Conn.Query("SELECT * from views;")
+	rows, err := db.Conn.Query("SELECT * FROM views;")
 	if err != nil {
 		return []View{}, err
 	}
@@ -34,7 +34,7 @@ func ViewAll() ([]View, error) {
 
 func FormAll() ([]Form, error) {
 	var forms []Form
-	rows, err := db.Conn.Query("SELECT * from forms;")
+	rows, err := db.Conn.Query("SELECT * FROM forms;")
 	if err != nil {
 		return []Form{}, err
 	}

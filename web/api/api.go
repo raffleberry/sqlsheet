@@ -2,6 +2,7 @@ package api
 
 import (
 	"embed"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -58,8 +59,12 @@ func formEdit(w http.ResponseWriter, r *http.Request) {
 var viewsPath = "/view/"
 
 func views(w http.ResponseWriter, r *http.Request) {
-	tmpl.Use(w, "view", struct {
-		f string
-		b string
+	err := tmpl.Use(w, "view", struct {
+		F string
+		B string
 	}{"foo", "bar"})
+
+	if err != nil {
+		fmt.Fprint(w, err.Error())
+	}
 }

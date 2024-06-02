@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/go-sql-driver/mysql"
+	"github.com/raffleberry/sqlsheet/pkg/utils"
 )
 
 var Conn *sql.DB
@@ -22,7 +23,7 @@ func Init() {
 	Conn, Err = sql.Open("mysql", cfg.FormatDSN())
 
 	if Err != nil {
-		log.Println(Err)
+		utils.Panic(Err)
 	}
 
 	pingErr := Conn.Ping()
