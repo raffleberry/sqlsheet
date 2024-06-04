@@ -28,3 +28,28 @@ func Init() {
 
 	log.Println("Connected to MySql!")
 }
+
+const TableLs = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA='sqlsheet';"
+
+func ListTables() ([]string, error) {
+	tables := make([]string, 0)
+	rows, err := Conn.Query(TableLs)
+	if err != nil {
+		return tables, err
+	}
+
+	for rows.Next() {
+		var table string
+		err := rows.Scan(&table)
+		if err != nil {
+			return tables, err
+		}
+		tables = append(tables, table)
+	}
+
+	if err := rows.Err(); err != nil {
+		return tables, err
+	}
+
+	return tables, nil
+}

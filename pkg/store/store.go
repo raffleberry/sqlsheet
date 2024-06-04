@@ -70,3 +70,20 @@ func FormAll() ([]Form, error) {
 	}
 	return forms, nil
 }
+
+func FormId(id int) (Form, error) {
+	var form Form
+	rows, err := db.Conn.Query("SELECT * FROM forms WHERE id=?;", id)
+	if err != nil {
+		return form, err
+	}
+	defer rows.Close()
+	rows.Next()
+	err = form.Scan(rows)
+	if err != nil {
+		return form, err
+	}
+
+	return form, nil
+
+}

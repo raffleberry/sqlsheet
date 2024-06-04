@@ -1,0 +1,30 @@
+{{define "forms"}}
+{{template "header"}}
+<main>
+    <header>
+        <h1>Forms</h1>
+    </header>
+    <ul>
+        {{ range $form := .}}
+        <li>
+            <a href="/form/{{$form.ID}}">
+                {{$form.Name}}
+            </a>
+        </li>
+        {{end}}
+    </ul>
+</main>
+
+{{template "footer"}}
+{{end}}
+
+{{define "form"}}
+{{template "header"}}
+<main>
+    <header>
+        Name:&nbsp;{{.Name}} <br>
+    </header>
+</main>
+
+{{template "footer"}}
+{{end}}

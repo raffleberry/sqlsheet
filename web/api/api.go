@@ -31,8 +31,11 @@ func Start() {
 		}
 	})
 	mux.Handle(staticFilesPath, http.FileServerFS(staticFs))
+
+	mux.HandleFunc(formsPath, forms)
 	mux.HandleFunc(formCreatePath, formCreate)
 	mux.HandleFunc(formEditPath, formEdit)
+
 	mux.HandleFunc(viewsPath, views)
 
 	sigint := make(chan os.Signal, 1)
@@ -61,21 +64,9 @@ func Start() {
 	}
 }
 
-var staticFilesPath = "/static/"
+const staticFilesPath = "/static/"
 
-var formCreatePath = "/form/create/"
-
-func formCreate(w http.ResponseWriter, r *http.Request) {
-
-}
-
-var formEditPath = "/form/edit/"
-
-func formEdit(w http.ResponseWriter, r *http.Request) {
-
-}
-
-var viewsPath = "/view/"
+const viewsPath = "/view/"
 
 func views(w http.ResponseWriter, r *http.Request) {
 	idstr := r.URL.Path[len(viewsPath):]
@@ -83,7 +74,7 @@ func views(w http.ResponseWriter, r *http.Request) {
 
 		views, err := store.ViewAll()
 		if err != nil {
-			log.Println(err)
+			log.Println("ERROR", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -91,21 +82,21 @@ func views(w http.ResponseWriter, r *http.Request) {
 		err = tmpl.Use(w, "views", views)
 
 		if err != nil {
-			log.Println(err)
+			log.Println("ERROR", err)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 
 	} else {
 		id, err := strconv.Atoi(idstr)
 		if err != nil {
-			log.Println(err)
+			log.Println("ERROR", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		view, err := store.ViewId(id)
 		if err != nil {
-			log.Println(err)
+			log.Println("ERROR", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -119,7 +110,7 @@ func views(w http.ResponseWriter, r *http.Request) {
 
 		cols, err := rows.Columns()
 		if err != nil {
-			log.Println(err)
+			log.Println("ERROR", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -142,7 +133,7 @@ func views(w http.ResponseWriter, r *http.Request) {
 		}{view, cols, td})
 
 		if err != nil {
-			log.Println(err)
+			log.Println("ERROR", err)
 		}
 	}
 }
