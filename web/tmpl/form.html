@@ -1,18 +1,22 @@
-{{define "forms"}}
+{{define "form-all"}}
 {{template "header"}}
 <main>
     <header>
         <h1>Forms</h1>
     </header>
-    <ul>
-        {{ range $form := .}}
-        <li>
-            <a href="/form/{{$form.ID}}">
-                {{$form.Name}}
-            </a>
-        </li>
-        {{end}}
-    </ul>
+    <section>
+        <a href="/form/create">Create</a>
+    </section>
+    <section>
+        <ul>
+            {{ range $form := .}}
+            <li class="hoverShow">
+                <a href="/form/{{$form.ID}}">{{$form.Name}}</a>&nbsp;<a class="hoverEl"
+                    href="/form/edit/{{$form.ID}}">✏</a>
+            </li>
+            {{end}}
+        </ul>
+    </section>
 </main>
 
 {{template "footer"}}
@@ -27,4 +31,55 @@
 </main>
 
 {{template "footer"}}
+{{end}}
+
+{{define "form-create"}}
+{{template "header"}}
+<main>
+    <header>
+        Create Form
+    </header>
+    <table>
+        <thead>
+            <th>Data Type</th>
+            <th>Field Name</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align: center;" colspan="2">
+                    <button hx-get="new-field" hx-target="closest tr" hx-swap="beforebegin">Add
+                        Field
+                    </button>
+                    <button hx-post="save">Save
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+
+{{template "footer"}}
+{{end}}
+
+{{define "form-create:new-field"}}
+<tr>
+    <td>
+        <select>
+            <option value="VARCHAR(128)">VARCHAR(128)</option>
+            <option value="VARCHAR(2048)">VARCHAR(2048)</option>
+            <option value="TEXT">TEXT</option>
+            <option value="MEDIUMTEXT">MEDIUMTEXT</option>
+            <option value="LONGTEXT">LONGTEXT</option>
+            <option value="BOOL">BOOL</option>
+            <option value="INT">INT</option>
+            <option value="FLOAT">FLOAT</option>
+            <option value="DATE">DATE</option>
+            <option value="TIME">TIME</option>
+            <option value="YEAR">YEAR</option>
+            <option value="DATETIME">DATETIME</option>
+            <option value="TIMESTAMP">TIMESTAMP</option>
+        </select>
+    </td>
+    <td><input type="text" /></td>
+</tr>
 {{end}}

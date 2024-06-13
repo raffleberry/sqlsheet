@@ -7,11 +7,13 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strconv"
 	"time"
 
 	"github.com/raffleberry/sqlsheet/pkg/db"
 	"github.com/raffleberry/sqlsheet/pkg/store"
+	"github.com/raffleberry/sqlsheet/pkg/utils"
 	"github.com/raffleberry/sqlsheet/web/server"
 	"github.com/raffleberry/sqlsheet/web/tmpl"
 )
@@ -30,7 +32,14 @@ func Start() {
 			w.Write([]byte(err.Error()))
 		}
 	})
-	mux.Handle(staticFilesPath, http.FileServerFS(staticFs))
+
+	if utils.DEV {
+		wd, er := os.Getwd()
+		utils.Panic(er)
+		mux.Handle(staticFilesPath, http.FileServer(http.Dir(filepath.Join(wd, "web", "api"))))
+	} else {
+		mux.Handle(staticFilesPath, http.FileServerFS(staticFs))
+	}
 
 	mux.HandleFunc(formsPath, forms)
 	mux.HandleFunc(formCreatePath, formCreate)

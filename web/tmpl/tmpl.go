@@ -23,7 +23,7 @@ func init() {
 
 func Use(wr io.Writer, name string, data any) error {
 	var err error
-	if len(os.Getenv("DEV")) > 0 {
+	if utils.DEV {
 		wd, er := os.Getwd()
 		utils.Panic(er)
 

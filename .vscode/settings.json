@@ -14,5 +14,6 @@
             "username": "sqlsheet",
             "password": "sqlsheet"
         }
-    ]
+    ],
+    "editor.formatOnSave": true
 }

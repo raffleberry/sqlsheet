@@ -1,0 +1,8 @@
+.hoverShow>.hoverEl {
+    visibility: hidden;
+}
+
+.hoverShow:hover>.hoverEl {
+    visibility: visible;
+
+}

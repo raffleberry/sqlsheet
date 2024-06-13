@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS views(
 );
 CREATE TABLE IF NOT EXISTS forms(
     id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(128),
     column_names VARCHAR(2048),
     column_types VARCHAR(2048)
 );
