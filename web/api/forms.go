@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -64,9 +65,25 @@ func formCreate(w http.ResponseWriter, r *http.Request) {
 
 	el := r.URL.Path[len(formCreatePath):]
 
-	log.Println(el)
+	log.Printf("%v: %v\n", r.Method, r.URL.Path)
 
 	switch el {
+	case "save":
+		if r.Method == http.MethodPost {
+			err := r.ParseForm()
+			if err != nil {
+				log.Printf("ERR : %s\n", err)
+				tmpl.Use(w, "form-create:save", err)
+			} else {
+				for dt, fn := range r.Form {
+					log.Println(dt, fn)
+				}
+				tmpl.Use(w, "form-create:save", r.Form)
+			}
+		} else {
+			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprint(w, "400: Bad Request")
+		}
 	case "":
 		log.Println("create")
 		err := tmpl.Use(w, "form-create", "")
@@ -74,17 +91,10 @@ func formCreate(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Println("ERROR", err)
 		}
-
-	case "new-field":
-		log.Println("new-field")
-		err := tmpl.Use(w, "form-create:new-field", "")
-
-		if err != nil {
-			log.Println("ERROR", err)
-		}
-
 	default:
-
+		log.Printf("%v Bad Request\n", r.URL.Path)
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprint(w, "400: Bad Request")
 	}
 
 }

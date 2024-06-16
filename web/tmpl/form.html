@@ -39,47 +39,44 @@
     <header>
         Create Form
     </header>
-    <table>
-        <thead>
-            <th>Data Type</th>
-            <th>Field Name</th>
-        </thead>
-        <tbody>
-            <tr>
-                <td style="text-align: center;" colspan="2">
-                    <button hx-get="new-field" hx-target="closest tr" hx-swap="beforebegin">Add
-                        Field
-                    </button>
-                    <button hx-post="save">Save
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <form method="post" action="save">
+        <table>
+            <thead>
+                <th>Data Type</th>
+                <th>Field Name</th>
+            </thead>
+            <tbody>
+                <tr style="display: none;">
+                    <td id="err" colspan="2"></td>
+                </tr>
+                <tr id="actionRow">
+                    <td style="text-align: center;" colspan="2">
+                        <button id="btnAddField">Add
+                            Field
+                        </button>
+                        <button type="submit" value="submit" id="btnSubmit">Save
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <script src="/static/form-create.js"></script>
 </main>
 
 {{template "footer"}}
 {{end}}
 
-{{define "form-create:new-field"}}
-<tr>
-    <td>
-        <select>
-            <option value="VARCHAR(128)">VARCHAR(128)</option>
-            <option value="VARCHAR(2048)">VARCHAR(2048)</option>
-            <option value="TEXT">TEXT</option>
-            <option value="MEDIUMTEXT">MEDIUMTEXT</option>
-            <option value="LONGTEXT">LONGTEXT</option>
-            <option value="BOOL">BOOL</option>
-            <option value="INT">INT</option>
-            <option value="FLOAT">FLOAT</option>
-            <option value="DATE">DATE</option>
-            <option value="TIME">TIME</option>
-            <option value="YEAR">YEAR</option>
-            <option value="DATETIME">DATETIME</option>
-            <option value="TIMESTAMP">TIMESTAMP</option>
-        </select>
-    </td>
-    <td><input type="text" /></td>
-</tr>
+{{define "form-create:save"}}
+{{template "header"}}
+<main>
+    <header>
+        Create Form : save
+    </header>
+    <section>
+        {{.}}
+    </section>
+</main>
+
+{{template "footer"}}
 {{end}}
