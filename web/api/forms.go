@@ -1,11 +1,16 @@
 package api
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
+	"slices"
 	"strconv"
+	"strings"
 
+	"github.com/raffleberry/sqlsheet/pkg/db"
 	"github.com/raffleberry/sqlsheet/pkg/store"
 	"github.com/raffleberry/sqlsheet/web/tmpl"
 )
@@ -59,6 +64,49 @@ func forms(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func validateFormCreate(f url.Values) error {
+	errStr := ""
+
+	tables, err := db.ListTables()
+
+	if err != nil {
+		return err
+	}
+
+	for f, t := range f {
+		ta := strings.Split(f, ".")
+		if len(ta) != 2 {
+			errStr += fmt.Sprintf("`<table>.<column>` expected found: `%s`, ", f)
+			continue
+		}
+		table, col := ta[0], ta[1]
+
+		if !slices.Contains(tables, table) {
+			errStr += fmt.Sprintf("`%s` table from `%s` doesn't exist, ", table, f)
+			continue
+		}
+
+		colNs, _, err := db.ListColumns(table)
+		if err != nil {
+			return err
+		}
+
+		if !slices.Contains(colNs, col) {
+			errStr += fmt.Sprintf("`%s` column in `%s` table doesn't exist, ", col, table)
+		}
+
+		if !db.IsDataTypeSupported(t[0]) {
+			errStr += fmt.Sprintf("`%s` with datatype:`%s` isn't supported, ", f, t[0])
+		}
+	}
+
+	if errStr != "" {
+		return errors.New(errStr)
+	}
+
+	return nil
+}
+
 const formCreatePath = "/form/create/"
 
 func formCreate(w http.ResponseWriter, r *http.Request) {
@@ -75,10 +123,13 @@ func formCreate(w http.ResponseWriter, r *http.Request) {
 				log.Printf("ERR : %s\n", err)
 				tmpl.Use(w, "form-create:save", err)
 			} else {
-				for dt, fn := range r.Form {
-					log.Println(dt, fn)
+				err := validateFormCreate(r.Form)
+				if err != nil {
+					log.Printf("ERR : %s\n", err)
+					tmpl.Use(w, "form-create:save", err)
+				} else {
+					tmpl.Use(w, "form-create:save", r.Form)
 				}
-				tmpl.Use(w, "form-create:save", r.Form)
 			}
 		} else {
 			w.WriteHeader(http.StatusBadRequest)
