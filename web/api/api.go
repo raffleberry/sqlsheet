@@ -39,8 +39,6 @@ func Start() {
 	}
 
 	mux.HandleFunc(formsPath, forms)
-	mux.HandleFunc(formCreatePath, formCreate)
-	mux.HandleFunc(formEditPath, formEdit)
 
 	mux.HandleFunc(viewsPath, views)
 

@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	"github.com/raffleberry/sqlsheet/pkg/db"
-	"github.com/raffleberry/sqlsheet/pkg/store"
 	"github.com/raffleberry/sqlsheet/web/tmpl"
 )
 
@@ -16,7 +15,7 @@ func views(w http.ResponseWriter, r *http.Request) {
 	idstr := r.URL.Path[len(viewsPath):]
 	if len(idstr) == 0 {
 
-		views, err := store.ViewAll()
+		views, err := db.Db.GetViews()
 		if err != nil {
 			log.Println("ERROR", err)
 			w.WriteHeader(http.StatusInternalServerError)
@@ -38,14 +37,14 @@ func views(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		view, err := store.ViewId(id)
+		view, err := db.Db.GetViewById(id)
 		if err != nil {
 			log.Println("ERROR", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
-		rows, err := db.Conn.Query(view.Query)
+		rows, err := db.Db.Conn().Query(view.Query)
 
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
@@ -71,7 +70,7 @@ func views(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err = tmpl.Use(w, "view", struct {
-			V  store.View
+			V  db.View
 			Th []string
 			Td [][]string
 		}{view, cols, td})

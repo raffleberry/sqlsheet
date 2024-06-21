@@ -5,14 +5,10 @@
         <h1>Forms</h1>
     </header>
     <section>
-        <a href="/form/create">Create</a>
-    </section>
-    <section>
         <ul>
-            {{ range $form := .}}
+            {{ range $table := .}}
             <li class="hoverShow">
-                <a href="/form/{{$form.ID}}">{{$form.Name}}</a>&nbsp;<a class="hoverEl"
-                    href="/form/edit/{{$form.ID}}">✏</a>
+                <a href="/form/{{$table}}">{{$table}}</a>&nbsp;<a class="hoverEl" href="/form/edit/{{$table}}">✏</a>
             </li>
             {{end}}
         </ul>
@@ -22,12 +18,13 @@
 {{template "footer"}}
 {{end}}
 
-{{define "form"}}
+{{define "form-table"}}
 {{template "header"}}
 <main>
     <header>
         Name:&nbsp;{{.Name}} <br>
     </header>
+    {{.Columns}}
 </main>
 
 {{template "footer"}}
@@ -49,7 +46,7 @@
                 <tr style="display: none;">
                     <td id="err" colspan="2"></td>
                 </tr>
-                <tr id="actionRow">
+                <tr id="btnRow">
                     <td style="text-align: center;" colspan="2">
                         <button id="btnAddField">Add
                             Field

@@ -1,11 +1,5 @@
 CREATE TABLE IF NOT EXISTS views(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(128),
-    query VARCHAR(2048)
-);
-CREATE TABLE IF NOT EXISTS forms(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(128),
-    column_names VARCHAR(2048),
-    column_types VARCHAR(2048)
+    name VARCHAR(128) NOT NULL,
+    query VARCHAR(2048) NOT NULL
 );
