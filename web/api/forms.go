@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/raffleberry/sqlsheet/pkg/db"
+	"github.com/raffleberry/sqlsheet/internal/db"
 	"github.com/raffleberry/sqlsheet/web/tmpl"
 )
 
@@ -22,7 +22,6 @@ func forms(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		log.Println(tables)
 		err = tmpl.Use(w, "form-all", tables)
 
 		if err != nil {

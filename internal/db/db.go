@@ -2,8 +2,9 @@ package db
 
 import (
 	"database/sql"
+	"os"
 
-	"github.com/raffleberry/sqlsheet/pkg/utils"
+	"github.com/raffleberry/sqlsheet/internal/utils"
 )
 
 type database interface {
@@ -20,10 +21,10 @@ var Db database
 
 func init() {
 	Db = &mySql{
-		user:   "sqlsheet",
-		passwd: "sqlsheet",
-		addr:   "127.0.0.1:3306",
-		dbname: "sqlsheet",
+		user:   os.Getenv("MYSQL_USER"),
+		passwd: os.Getenv("MYSQL_PASS"),
+		addr:   os.Getenv("MYSQL_ADDR"),
+		dbname: os.Getenv("MYSQL_DB"),
 	}
 	err := Db.Init()
 	utils.Panic(err)

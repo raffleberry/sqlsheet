@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/raffleberry/sqlsheet/pkg/db"
+	"github.com/raffleberry/sqlsheet/internal/db"
 	"github.com/raffleberry/sqlsheet/web/tmpl"
 )
 

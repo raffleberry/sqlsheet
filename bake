@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# nsfu
+cd "$(dirname "$0")"
+if [ -f ".env" ]; then
+  export $(grep -v '^#' .env | xargs -d '\n')
+fi
+
+set -x
+
+
+if [ "$1" = "run" ]; then
+  go run cmd/app/app.go
+
+elif [ "$1" = "build" ]; then
+  go build  -o build/ cmd/app/app.go
+
+elif [ "$1" = "test" ]; then
+  go test -v ${@:2}
+
+elif [ "$1" = "clean" ]; then
+  rm -rf build/*
+else
+  set +x
+  echo "Shiver me timbers!!.. Invalid arrghh - ${@:1}"
+  exit 1
+fi

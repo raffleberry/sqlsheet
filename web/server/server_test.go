@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/raffleberry/sqlsheet/pkg/utils"
+	"github.com/raffleberry/sqlsheet/internal/utils"
 	"github.com/raffleberry/sqlsheet/web/server"
 )
 

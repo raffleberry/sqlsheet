@@ -22,9 +22,30 @@
 {{template "header"}}
 <main>
     <header>
-        Name:&nbsp;{{.Name}} <br>
+        <h3>{{.Name}}</h2>
     </header>
-    {{.Columns}}
+    <table>
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th>Data Type</th>
+                <th>Column Name</th>
+                <th>Default Value</th>
+                <th>Nullable</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range $c := .Columns }}
+            <tr>
+                <td>{{ $c.OrdinalPosition }}</td>
+                <td>{{ $c.ColumnType }}</td>
+                <td>{{ $c.ColumnName }}</td>
+                <td>{{ $c.ColumnDefault.String }}</td>
+                <td>{{ $c.IsNullable }}</td>
+            </tr>
+            {{ end }}
+        </tbody>
+    </table>
 </main>
 
 {{template "footer"}}

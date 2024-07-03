@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/raffleberry/sqlsheet/pkg/utils"
+	"github.com/raffleberry/sqlsheet/internal/utils"
 	"github.com/raffleberry/sqlsheet/web/server"
 	"github.com/raffleberry/sqlsheet/web/tmpl"
 )
